@@ -452,7 +452,7 @@ async function run() {
     // Get all users data from db
     // app.get('/users', verifyToken, verifyAdmin, async (req, res) => {
     //   const r
-    //   res.send(result);
+    //   
     // });
 
     app.get("/users", async (req, res) => {
