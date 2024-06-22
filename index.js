@@ -451,7 +451,7 @@ async function run() {
 
     // Get all users data from db
     // app.get('/users', verifyToken, verifyAdmin, async (req, res) => {
-    //   const result = await usersCollection.find().toArray();
+    //   const r
     //   res.send(result);
     // });
 
