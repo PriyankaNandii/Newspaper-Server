@@ -1,195 +1,4 @@
-// const express = require("express");
-// const cors = require("cors");
-// require("dotenv").config();
-// const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
-// const jwt = require("jsonwebtoken");
 
-// const app = express();
-// const port = process.env.PORT || 9000;
-
-// app.use(cors({
-//   origin: [
-//     "http://localhost:5173",
-//     "https://assignment-12-newspaper.web.app",
-//     "https://assignment-12-newspaper.firebaseapp.com",
-//   ],
-//   credentials: true,
-//   optionSuccessStatus: 200,
-// }));
-
-// app.use(express.json());
-// // app.use(cookieParser())
-
-// // Verify Token Middleware
-// const verifyToken = async (req, res, next) => {
-//   const token = req.cookies?.token;
-//   console.log(token);
-//   if (!token) {
-//     return res.status(401).send({ message: 'unauthorized access' });
-//   }
-//   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
-//     if (err) {
-//       console.log(err);
-//       return res.status(401).send({ message: 'unauthorized access' });
-//     }
-//     req.user = decoded;
-//     next();
-//   });
-// };
-
-// const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@atlascluster.yh51je0.mongodb.net/?retryWrites=true&w=majority`;
-
-// const client = new MongoClient(uri, {
-//   serverApi: {
-//     version: ServerApiVersion.v1,
-//     strict: true,
-//     deprecationErrors: true,
-//   },
-// });
-
-// async function run() {
-//   try {
-//     await client.connect();
-//     const articlesCollection = client.db("newswispDB").collection("articles");
-//     const viewCollection = client.db("newswispDB").collection("views");
-//     const publishersCollection = client.db("newswispDB").collection("publishers");
-//     const usersCollection = client.db("newswispDB").collection("users");
-
-//     const verifyAdmin = async (req, res, next) => {
-//       const user = req.user;
-//       const query = { email: user?.email };
-//       const result = await usersCollection.findOne(query);
-//       if (!result || result?.role !== 'admin') {
-//         return res.status(401).send({ message: 'unauthorized access' });
-//       }
-//       next();
-//     };
-
-//     app.get("/articles", async (req, res) => {
-//       try {
-//         const result = await articlesCollection.find().toArray();
-//         res.send(result);
-//       } catch (error) {
-//         res.status(500).send({ message: "Server error" });
-//       }
-//     });
-
-//     app.post("/articles", async (req, res) => {
-//       try {
-//         const addData = req.body;
-//         const result = await articlesCollection.insertOne(addData);
-//         res.send(result);
-//       } catch (error) {
-//         res.status(500).send({ message: "Server error" });
-//       }
-//     });
-
-//     app.get("/article/:id", async (req, res) => {
-//       try {
-//         const id = req.params.id;
-//         const query = { _id: new ObjectId(id) };
-//         const result = await articlesCollection.findOne(query);
-//         res.send(result);
-//       } catch (error) {
-//         res.status(500).send({ message: "Server error" });
-//       }
-//     });
-
-//     app.post("/views", async (req, res) => {
-//       try {
-//         const addView = req.body;
-//         const result = await viewCollection.insertOne(addView);
-//         res.send(result);
-//       } catch (error) {
-//         res.status(500).send({ message: "Server error" });
-//       }
-//     });
-
-//     app.post("/publishers", verifyToken, verifyAdmin, async (req, res) => {
-//       try {
-//         const addPublisher = req.body;
-//         const result = await publishersCollection.insertOne(addPublisher);
-//         res.send(result);
-//       } catch (error) {
-//         res.status(500).send({ message: "Server error" });
-//       }
-//     });
-
-//     app.get("/publishers", verifyToken, verifyAdmin, async (req, res) => {
-//       const result = await publishersCollection.find().toArray();
-//       res.send(result);
-//     });
-
-//     app.get("/users", verifyToken, verifyAdmin, async (req, res) => {
-//       const result = await usersCollection.find().toArray();
-//       res.send(result);
-//     });
-
-//     app.put("/user", async (req, res) => {
-//       const user = req.body;
-//       const query = { email: user.email };
-//       const existingUser = await usersCollection.findOne(query);
-//       if (existingUser) {
-//         return res.send({ message: "user already exists", insertedId: null });
-//       }
-  
-//       const options = { upsert: true };
-//       const updateDoc = {
-//         $set: {
-//           ...user,
-//           timestamp: Date.now(),
-//         },
-//       };
-//       const result = await usersCollection.updateOne(query, updateDoc, options);
-//       res.send(result);
-//     });
-
-//     app.get("/user/:email", async (req, res) => {
-//       const email = req.params.email;
-//       const result = await usersCollection.findOne({ email });
-//       res.send(result);
-//     });
-
-//     app.patch('/users/admin/:id', verifyToken, verifyAdmin, async (req, res) => {
-//       const id = req.params.id;
-//       const filter = { _id: new ObjectId(id) };
-//       const updatedDoc = {
-//         $set: {
-//           role: 'admin'
-//         }
-//       };
-//       const result = await usersCollection.updateOne(filter, updatedDoc);
-//       res.send(result);
-//     });
-
-//     app.get("/my-articles/:email", async (req, res) => {
-//       const email = req.params.email;
-//       const query = { email: email };
-//       const result = await articlesCollection.find(query).toArray();
-//       res.send(result);
-//     });
-
-//     app.delete("/article/:id", async (req, res) => {
-//       const id = req.params.id;
-//       const query = { _id: new ObjectId(id) };
-//       const result = await articlesCollection.deleteOne(query);
-//       res.send(result);
-//     });
-
-//   } finally {
-//     // Do not close the client connection in a long-running server
-//   }
-// }
-
-// run().catch(console.dir);
-
-// app.get("/", (req, res) => {
-//   res.send("server is running");
-// });
-
-// app.listen(port, () => {
-//   console.log(`Server is running on port: ${port}`);
-// });
 
 
 const express = require("express");
@@ -200,7 +9,7 @@ const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 
-const port = process.env.PORT || 9000;
+const port = process.env.PORT || 5000;
 
 app.use(cors({
   origin: [
@@ -218,13 +27,13 @@ app.use(cookieParser());
 // Verify Token Middleware
 const verifyToken = async (req, res, next) => {
   const token = req.cookies?.token;
-  console.log(token);
+  // console.log(token);
   if (!token) {
     return res.status(401).send({ message: 'unauthorized access' });
   }
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
     if (err) {
-      console.log(err);
+      // console.log(err);
       return res.status(401).send({ message: 'unauthorized access' });
     }
     req.user = decoded;
@@ -244,7 +53,7 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    await client.connect();
+    // await client.connect();
     const articlesCollection = client.db("newswispDB").collection("articles");
     const viewCollection = client.db("newswispDB").collection("views");
     const publishersCollection = client.db("newswispDB").collection("publishers");
@@ -252,7 +61,7 @@ async function run() {
 
     // Verify Admin Middleware
     const verifyAdmin = async (req, res, next) => {
-      console.log('Verifying admin');
+      // console.log('Verifying admin');
       const user = req.user;
       const query = { email: user?.email };
       const result = await usersCollection.findOne(query);
@@ -346,7 +155,7 @@ async function run() {
             sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'strict',
           })
           .send({ success: true });
-        console.log('Logout successful');
+        // console.log('Logout successful');
       } catch (err) {
         res.status(500).send(err);
       }
@@ -532,7 +341,7 @@ async function run() {
 
     app.get("/user/:email", async (req, res) => {
       const email = req.params.email;
-      console.log(`Looking for user with email: ${email}`);
+      // console.log(`Looking for user with email: ${email}`);
       const result = await usersCollection.findOne({ email });
       if (result) {
         res.send(result);
@@ -637,53 +446,46 @@ app.patch('/article/:id', verifyToken, verifyAdmin, async (req, res) => {
       }
     });
 
-    // app.get('/admin-stat', async (req, res) =>{
-    //   const articleDetails = await articlesCollection.find(
-    //     {},
-    //     {
-    //       projection: {
-    //         publisher:1,
-
-    //       },
-    //     }
-
-    //   ).toArray()
-    //   console.log(articleDetails);
-    //   res.send(articleDetails)
-    // })
-    app.get('/admin-stat', async (req, res) => {
+    app.get('/admin-stat',verifyToken, verifyAdmin, async (req, res) => {
       const articleDetails = await articlesCollection.aggregate([
           { $group: { _id: "$publisher", count: { $sum: 1 } } }
       ]).toArray();
       
       const responseData = articleDetails.map(item => [item._id, item.count]);
       
-      console.log(responseData);
+      // console.log(responseData);
       res.send(responseData);
   });
     
-  app.put('/article/update/:id', async (req, res) => {
+  app.patch('/update/:id', async (req, res) => {
+    const ar = req.body
   const id = req.params.id;
-  const articleData = req.body;
+  // const articleData = req.body;
+  const filter = { _id: new ObjectId(id) }
 
-  try {
-    const query = { _id: new ObjectId(id) };
-    const updateDoc = {
-      $set: articleData,
-    };
-
-    const result = await articlesCollection.updateOne(query, updateDoc);
-
-    if (result.modifiedCount === 0) {
-      return res.status(404).json({ message: 'Article not found or not modified' });
-    }
-
-    res.json({ message: 'Article updated successfully', result });
-  } catch (error) {
-    console.error('Error updating article:', error);
-    res.status(500).json({ message: 'Server error' });
-  }
+  const updateDoc = {
+    $set: {
+      title: ar.title,
+      description:ar.description,
+      image:ar.image
+    },
+  };
+  const result = await articlesCollection.updateOne(filter, updateDoc);
+res.send(result)
 });
+
+
+app.get('/update/:id', async (req, res) => {
+  const id = req.params.id;
+  // const articleData = req.body;
+  const query = { _id: new ObjectId(id) };
+
+    const result = await articlesCollection.findOne(query);
+
+     res.send(result)
+});
+
+
 
   } finally {
     // Do not close the client connection in a long-running server
