@@ -1,4 +1,4 @@
-Newspaper FullStack Website
+NewsWisp FullStack Website
 Project Overview
 The Newspaper FullStack Website aims to revolutionize how users consume news by providing a comprehensive news aggregation platform. It offers trending articles, premium features, and a seamless user experience. Users can read articles, and subscribe for premium content, and authors can publish and manage their articles through a user-friendly interface.
 
